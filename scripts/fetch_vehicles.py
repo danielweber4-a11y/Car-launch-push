@@ -1,29 +1,21 @@
 import requests
-from bs4 import BeautifulSoup
-import json
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def fetch_vehicles():
-    url = "https://example-auto-news.com"  # Ersetze durch eine tatsächliche Quelle
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
+    url = 'https://www.autobild.de'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
+        # Assume further processing happens here
+    except requests.exceptions.RequestException as e:
+        logging.error(f'Error fetching vehicles: {e}')
+        return []  # Return an empty list in case of an error
+    return response.json() if response.content else []  # Adjust return statement accordingly
 
-    # Beispiel für das Scrapen
-    vehicles = []
-    for item in soup.select(".vehicle-container"):
-        car = {
-            "name": item.find("h2").text.strip(),
-            "image": item.find("img")["src"],
-            "specs": item.find("p", class_="specs").text.strip(),
-            "release_date": item.find("span", class_="release-date").text.strip()
-        }
-        vehicles.append(car)
-
-    # Ergebnis speichern
-    with open("../data/fetched_data.json", "w") as file:
-        json.dump(vehicles, file, indent=4)
-
-    return vehicles
-
-if __name__ == "__main__":
-    data = fetch_vehicles()
-    print("Fetched vehicles:", len(data))
+# Example usage
+if __name__ == '__main__':
+    vehicles = fetch_vehicles()
+    print(vehicles)
