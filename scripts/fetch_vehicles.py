@@ -1,51 +1,53 @@
 import os
 import json
 
+
 def get_data_path():
     """
-    Ermittelt dynamisch den absoluten Pfad zur Datei fetched_data.json im data-Verzeichnis.
-    Erstellt das data-Verzeichnis, wenn es nicht existiert.
+    Get the absolute path to the fetched_data.json file inside the data directory.
     """
-    # Absoluter Pfad des aktuellen Skripts
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(script_dir, '../data')  # Relativer Pfad eine Ebene höher und ins data-Verzeichnis
-
-    # Erstellt den data-Ordner, falls nicht existiert
+    # Get the absolute path of the current script
+    current_script_path = os.path.abspath(__file__)
+    # Navigate to the parent directory of the current script
+    base_dir = os.path.dirname(current_script_path)
+    # Get the path to the "data" directory
+    data_dir = os.path.join(base_dir, "..", "data")
+    
+    # Ensure the "data" directory exists
     os.makedirs(data_dir, exist_ok=True)
 
-    # Gibt den absoluten Pfad zur fetched_data.json zurück
-    return os.path.join(data_dir, 'fetched_data.json')
+    # Return the absolute path to the fetched_data.json file
+    return os.path.join(data_dir, "fetched_data.json")
 
 
 def save_to_json_file(data):
     """
-    Speichert gegebene Daten in der Datei fetched_data.json im data-Verzeichnis.
+    Save the provided data to the file at the data path.
     """
-    json_file_path = get_data_path()
-    with open(json_file_path, 'w', encoding='utf-8') as json_file:
-        json.dump(data, json_file, indent=4, ensure_ascii=False)
-    print(f"Daten wurden erfolgreich in {json_file_path} gespeichert.")
+    file_path = get_data_path()
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(data, file, indent=4, ensure_ascii=False)
+    print(f"Data saved to {file_path}")
 
 
 def fetch_vehicles():
     """
-    Simuliert das Abrufen von Fahrzeugdaten und speichert die Daten in fetched_data.json.
+    Fetch vehicle data. This is a placeholder – replace with actual fetching logic.
     """
-    # Platzhalter für echte Fahrzeugdaten (du kannst deine Logik hier einfügen)
-    vehicles = [
-        {'make': 'Toyota', 'model': 'Corolla', 'year': 2020},
-        {'make': 'Honda', 'model': 'Civic', 'year': 2018},
-        {'make': 'Tesla', 'model': 'Model 3', 'year': 2023}
+    # Example vehicle data
+    return [
+        {"make": "Toyota", "model": "Corolla", "year": 2020},
+        {"make": "Volkswagen", "model": "Golf", "year": 2019},
+        {"make": "Tesla", "model": "Model Y", "year": 2023},
     ]
-
-    return vehicles
 
 
 if __name__ == '__main__':
-    # Fahrzeugdaten abrufen
-    vehicle_data = fetch_vehicles()
-    if vehicle_data:
-        save_to_json_file(vehicle_data)
-        print("Fahrzeugdaten abgerufen und gespeichert.")
+    # Fetch vehicle data
+    vehicles = fetch_vehicles()
+    
+    if vehicles:
+        save_to_json_file(vehicles)
+        print("Fetched and saved vehicles successfully.")
     else:
-        print("Keine Fahrzeugdaten gefunden oder ein Fehler ist aufgetreten.")
+        print("No vehicles fetched.")
