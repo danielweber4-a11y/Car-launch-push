@@ -1,0 +1,41 @@
+name: Run Car Launch Workflow
+
+on:
+  workflow_dispatch: # Ermöglicht manuelles Starten der Action
+    inputs:
+      email_subject: # Eingabeparameter für die E-Mail lautet E-Mail-Betreff
+        description: 'Betreff der E-Mail'
+        required: true
+      email_body_message:
+        description: 'Optionaler Standardtext der Nachricht'
+        required: false
+        default: 'Hier sind die neuesten Fahrzeugdaten!'
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Fetch vehicle data
+        run: python scripts/fetch_vehicles.py
+
+      - name: Process data
+        run: python scripts/process_data.py
+
+      - name: Email processed data
+        run: python scripts/send_email.py
+        env: 
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }} # SMTP-Server
+          SMTP_PORT: ${{ secrets.SMTP_PORT }} # Port
+          EMAIL: ${{ secrets.EMAIL }} # Deine E-Mail-Adresse
+          PASSWORD: ${{ secrets.PASSWORD }} # Dein Passwort
