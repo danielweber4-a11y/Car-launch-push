@@ -39,3 +39,5 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }} # Port
           EMAIL: ${{ secrets.EMAIL }} # Deine E-Mail-Adresse
           PASSWORD: ${{ secrets.PASSWORD }} # Dein Passwort
+          EMAIL_SUBJECT: ${{ inputs.email_subject }}
+          EMAIL_BODY_MESSAGE: ${{ inputs.email_body_message }}

@@ -29,3 +29,8 @@ def send_email(subject, body):
         print("Email sent successfully")
     except Exception as e:
         print(f"Error sending email: {e}")
+
+if __name__ == "__main__":
+    subject = os.environ.get("EMAIL_SUBJECT", "")
+    body = os.environ.get("EMAIL_BODY_MESSAGE", "")
+    send_email(subject, body)
