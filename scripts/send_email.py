@@ -17,12 +17,16 @@ smtp_server = os.environ.get("SMTP_SERVER")
         email = email or config["email"]
         password = password or config["password"]
 
-smtp_server = config["smtp_server"]
-    port = config["port"]
-with open("../config/email_config.json", "r") as file:
-        config = json.load(file)
-
 port = int(port)
 
     try:
         server = smtplib.SMTP(smtp_server, port)
+
+server.starttls()
+server.login(email, password)
+message = f"Subject: {subject}\n\n{body}"
+server.sendmail(email, email, message)
+server.quit()
+print("Email sent successfully")
+except Exception as e:
+    print(f"Error sending email: {e}")
