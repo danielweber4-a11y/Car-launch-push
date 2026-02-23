@@ -1,1 +1,17 @@
-[]
+[
+    {
+        "make": "Toyota",
+        "model": "Corolla",
+        "year": 2020
+    },
+    {
+        "make": "Volkswagen",
+        "model": "Golf",
+        "year": 2019
+    },
+    {
+        "make": "Tesla",
+        "model": "Model Y",
+        "year": 2023
+    }
+]
