@@ -1,5 +1,5 @@
 # Car-launch-push
-Beschreibung: "Ein Agent, der täglich neue Fahrzeuge mit Bildern und Details auflistet und per E-Mail versendet."
+Beschreibung: "Ein Agent, der wöchentlich am freitag um 6 Uhr neue Fahrzeuge mit Bildern und Details auflistet und per E-Mail versendet."
 
 ## Data Sources / Databases
 
