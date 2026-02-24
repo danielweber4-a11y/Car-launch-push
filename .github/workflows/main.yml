@@ -42,5 +42,4 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }} # Port
           EMAIL: ${{ secrets.EMAIL }} # Your email address
           PASSWORD: ${{ secrets.PASSWORD }} # Your password
-          EMAIL_SUBJECT: ${{ inputs.email_subject }}
-          EMAIL_BODY_MESSAGE: ${{ inputs.email_body_message }}
+          EMAIL_SUBJECT: ${{ inputs.email_subject || 'New Vehicle Data' }}

@@ -33,4 +33,11 @@ def send_email(subject, body):
 if __name__ == "__main__":
     subject = os.environ.get("EMAIL_SUBJECT", "")
     body = os.environ.get("EMAIL_BODY_MESSAGE", "")
+    if not body:
+        body_file = os.path.join(os.path.dirname(__file__), "..", "data", "email_body.txt")
+        if os.path.exists(body_file):
+            with open(body_file, "r", encoding="utf-8") as fh:
+                body = fh.read()
+        else:
+            print(f"Warning: no email body found (EMAIL_BODY_MESSAGE not set and {body_file} does not exist)")
     send_email(subject, body)
