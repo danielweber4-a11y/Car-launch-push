@@ -7,7 +7,8 @@ logger = logging.getLogger(__name__)
 
 
 def filter_recent_vehicles(vehicles, days=7, current_time=None):
-    """Return only vehicles whose release_date is within the last `days` days."""
+    """Return vehicles whose release_date is within the last `days` days,
+    or vehicles that have no release_date (always included)."""
     if current_time is None:
         current_time = datetime.now(tz=timezone.utc)
     cutoff = current_time - timedelta(days=days)
@@ -15,7 +16,7 @@ def filter_recent_vehicles(vehicles, days=7, current_time=None):
     for vehicle in vehicles:
         raw_date = vehicle.get("release_date")
         if not raw_date:
-            logger.warning("Vehicle missing release_date; skipping. Record: %s", vehicle)
+            recent.append(vehicle)
             continue
         parsed = None
         for fmt in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d"):
@@ -44,7 +45,7 @@ def process_data(file_path, days=7):
         if missing:
             logger.warning("Record missing required fields %s; using defaults. Record: %s", missing, car)
         processed_data.append(
-            f"Name: {car.get('name', 'Unknown')}\n"
+            f"Name: {car.get('name', car.get('make_name', 'Unknown'))}\n"
             f"Specs: {car.get('specs', 'Unknown')}\n"
             f"Release Date: {car.get('release_date', 'Unknown')}\n"
             f"Image URL: {car.get('image', 'Unknown')}\n\n"
