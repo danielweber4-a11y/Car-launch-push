@@ -42,5 +42,6 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }} # Port
           EMAIL: ${{ secrets.EMAIL }} # Your email address
           PASSWORD: ${{ secrets.PASSWORD }} # Your password
+          RECIPIENT_EMAIL: daniel.weber4@bluewin.ch # Recipient email address
           EMAIL_SUBJECT: ${{ inputs.email_subject }}
           EMAIL_BODY_MESSAGE: ${{ inputs.email_body_message }}

@@ -7,6 +7,7 @@ def send_email(subject, body):
     port = os.environ.get("SMTP_PORT")
     email = os.environ.get("EMAIL")
     password = os.environ.get("PASSWORD")
+    recipient_email = os.environ.get("RECIPIENT_EMAIL")
 
     if not all([smtp_server, port, email, password]):
         config_path = os.path.join(os.path.dirname(__file__), "..", "config", "email_config.json")
@@ -16,6 +17,10 @@ def send_email(subject, body):
         port = port or config["port"]
         email = email or config["email"]
         password = password or config["password"]
+        recipient_email = recipient_email or config.get("recipient_email", email)
+
+    if not recipient_email:
+        recipient_email = email
 
     port = int(port)
 
@@ -23,8 +28,8 @@ def send_email(subject, body):
         server = smtplib.SMTP(smtp_server, port)
         server.starttls()
         server.login(email, password)
-        message = f"Subject: {subject}\nFrom: {email}\n\n{body}"
-        server.sendmail(email, email, message)
+        message = f"Subject: {subject}\nFrom: {email}\nTo: {recipient_email}\n\n{body}"
+        server.sendmail(email, recipient_email, message)
         server.quit()
         print("Email sent successfully")
     except Exception as e:

@@ -1,1 +1,1 @@
-{\n  \"smtp_server\": \"smtp.bluewin.ch\",\n  \"port\": 587,\n  \"email\": \"daniel.weber4@bluewin.ch\",\n  \"password\": \"ich1l2sch3\"\n}
+{\n  \"smtp_server\": \"smtp.bluewin.ch\",\n  \"port\": 587,\n  \"email\": \"daniel.weber4@bluewin.ch\",\n  \"password\": \"ich1l2sch3\",\n  \"recipient_email\": \"daniel.weber4@bluewin.ch\"\n}
