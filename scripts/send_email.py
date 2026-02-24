@@ -1,3 +1,4 @@
+import logging
 import os
 import smtplib
 import json
@@ -40,6 +41,7 @@ def send_email(subject, body):
         print(f"Error sending email: {e}")
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.WARNING)
     subject = os.environ.get("EMAIL_SUBJECT", "New Vehicle Data")
     intro = os.environ.get("EMAIL_BODY_MESSAGE", "Here are the latest vehicle data!")
 
