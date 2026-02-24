@@ -1,15 +1,18 @@
 name: Run Car Launch Workflow
 
 on:
-  workflow_dispatch: # Ermöglicht manuelles Starten der Action
+  schedule:
+    - cron: '0 6 * * 5' # Every Friday at 6am UTC
+  workflow_dispatch: # Allows manual triggering of the action
     inputs:
-      email_subject: # Eingabeparameter für die E-Mail lautet E-Mail-Betreff
-        description: 'Betreff der E-Mail'
-        required: true
-      email_body_message:
-        description: 'Optionaler Standardtext der Nachricht'
+      email_subject: # Input parameter for the email subject
+        description: 'Email subject'
         required: false
-        default: 'Hier sind die neuesten Fahrzeugdaten!'
+        default: 'New Vehicle Data'
+      email_body_message:
+        description: 'Optional default message text'
+        required: false
+        default: 'Here are the latest vehicle data!'
 
 jobs:
   run-scripts:
@@ -35,9 +38,9 @@ jobs:
       - name: Email processed data
         run: python scripts/send_email.py
         env: 
-          SMTP_SERVER: ${{ secrets.SMTP_SERVER }} # SMTP-Server
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }} # SMTP server
           SMTP_PORT: ${{ secrets.SMTP_PORT }} # Port
-          EMAIL: ${{ secrets.EMAIL }} # Deine E-Mail-Adresse
-          PASSWORD: ${{ secrets.PASSWORD }} # Dein Passwort
+          EMAIL: ${{ secrets.EMAIL }} # Your email address
+          PASSWORD: ${{ secrets.PASSWORD }} # Your password
           EMAIL_SUBJECT: ${{ inputs.email_subject }}
           EMAIL_BODY_MESSAGE: ${{ inputs.email_body_message }}

@@ -23,14 +23,21 @@ def send_email(subject, body):
         server = smtplib.SMTP(smtp_server, port)
         server.starttls()
         server.login(email, password)
-        message = f"Subject: {subject}\n\n{body}"
-        server.sendmail(email, "daniel.weber@johnsonelectric.com", message)
+        message = f"Subject: {subject}\nFrom: {email}\n\n{body}"
+        server.sendmail(email, email, message)
         server.quit()
         print("Email sent successfully")
     except Exception as e:
         print(f"Error sending email: {e}")
 
 if __name__ == "__main__":
-    subject = os.environ.get("EMAIL_SUBJECT", "")
-    body = os.environ.get("EMAIL_BODY_MESSAGE", "")
+    subject = os.environ.get("EMAIL_SUBJECT", "New Vehicle Data")
+    intro = os.environ.get("EMAIL_BODY_MESSAGE", "Here are the latest vehicle data!")
+
+    from process_data import process_data
+    here = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(here, "..", "data", "fetched_data.json")
+    vehicle_data = process_data(json_path)
+
+    body = f"{intro}\n\n{vehicle_data}".strip() if vehicle_data else intro
     send_email(subject, body)
