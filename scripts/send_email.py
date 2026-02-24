@@ -1,6 +1,7 @@
 import os
 import smtplib
 import json
+from email.mime.text import MIMEText
 
 def send_email(subject, body):
     smtp_server = os.environ.get("SMTP_SERVER")
@@ -28,8 +29,11 @@ def send_email(subject, body):
         server = smtplib.SMTP(smtp_server, port)
         server.starttls()
         server.login(email, password)
-        message = f"Subject: {subject}\nFrom: {email}\nTo: {recipient_email}\n\n{body}"
-        server.sendmail(email, recipient_email, message)
+        msg = MIMEText(body, "plain", "utf-8")
+        msg["Subject"] = subject
+        msg["From"] = email
+        msg["To"] = recipient_email
+        server.sendmail(email, recipient_email, msg.as_string())
         server.quit()
         print("Email sent successfully")
     except Exception as e:
