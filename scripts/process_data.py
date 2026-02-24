@@ -41,14 +41,14 @@ def process_data(file_path, days=7):
 
     processed_data = []
     for car in data:
-        missing = [key for key in ("name", "specs", "release_date", "image") if key not in car]
+        missing = [key for key in ("oem", "model", "model_year", "release_date") if key not in car]
         if missing:
             logger.warning("Record missing required fields %s; using defaults. Record: %s", missing, car)
         processed_data.append(
-            f"Name: {car.get('name', car.get('make_name', 'Unknown'))}\n"
-            f"Specs: {car.get('specs', 'Unknown')}\n"
-            f"Release Date: {car.get('release_date', 'Unknown')}\n"
-            f"Image URL: {car.get('image', 'Unknown')}\n\n"
+            f"OEM: {car.get('oem', 'Unknown')}\n"
+            f"Model: {car.get('model', 'Unknown')}\n"
+            f"Model Year: {car.get('model_year', 'Unknown')}\n"
+            f"Launch Date: {car.get('release_date', 'Unknown')}\n\n"
         )
 
     return "\n".join(processed_data)
