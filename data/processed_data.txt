@@ -1,0 +1,17 @@
+Name: Toyota Corolla
+Specs: 1.8L, 4-cylinder, 139 hp
+Release Date: 2020-01-15
+Image URL: https://example.com/toyota_corolla.jpg
+
+
+Name: Volkswagen Golf
+Specs: 1.4L TSI, 147 hp
+Release Date: 2019-06-01
+Image URL: https://example.com/vw_golf.jpg
+
+
+Name: Tesla Model Y
+Specs: Dual Motor AWD, 384 hp
+Release Date: 2023-03-10
+Image URL: https://example.com/tesla_model_y.jpg
+

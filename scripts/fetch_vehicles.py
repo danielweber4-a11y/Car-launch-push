@@ -36,9 +36,9 @@ def fetch_vehicles():
     """
     # Example vehicle data
     return [
-        {"make": "Toyota", "model": "Corolla", "year": 2020},
-        {"make": "Volkswagen", "model": "Golf", "year": 2019},
-        {"make": "Tesla", "model": "Model Y", "year": 2023},
+        {"name": "Toyota Corolla", "specs": "1.8L, 4-cylinder, 139 hp", "release_date": "2020-01-15", "image": "https://example.com/toyota_corolla.jpg"},
+        {"name": "Volkswagen Golf", "specs": "1.4L TSI, 147 hp", "release_date": "2019-06-01", "image": "https://example.com/vw_golf.jpg"},
+        {"name": "Tesla Model Y", "specs": "Dual Motor AWD, 384 hp", "release_date": "2023-03-10", "image": "https://example.com/tesla_model_y.jpg"},
     ]
 
 

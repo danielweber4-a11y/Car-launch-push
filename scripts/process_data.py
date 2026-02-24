@@ -28,3 +28,10 @@ if __name__ == "__main__":
     json_path = os.path.join(here, "..", "data", "fetched_data.json")
     result = process_data(json_path)
     print("Processed data:\n", result)
+    output_path = os.path.join(here, "..", "data", "processed_data.txt")
+    try:
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(result)
+        print(f"Processed data saved to {output_path}")
+    except OSError as e:
+        logging.error("Failed to save processed data to %s: %s", output_path, e)
