@@ -1,5 +1,14 @@
 import os
 import json
+import requests
+
+# Data sources used by this script:
+# 1. NHTSA vPIC API (https://vpic.nhtsa.dot.gov/api/)
+#    - Free, public API provided by the U.S. National Highway Traffic Safety Administration
+#    - Used to retrieve vehicle makes and models
+# 2. data/fetched_data.json – local cache of the last successful fetch
+
+NHTSA_BASE_URL = "https://vpic.nhtsa.dot.gov/api/vehicles"
 
 
 def get_data_path():
@@ -32,14 +41,32 @@ def save_to_json_file(data):
 
 def fetch_vehicles():
     """
-    Fetch vehicle data. This is a placeholder – replace with actual fetching logic.
+    Fetch vehicle data from the NHTSA vPIC API.
+
+    Database / API sources checked:
+      - NHTSA vPIC API: https://vpic.nhtsa.dot.gov/api/
+        Endpoint used: GET /vehicles/GetAllMakes?format=json
+        Returns the full list of vehicle makes recognised by the NHTSA.
+
+    Returns a list of dicts with keys: make_id, make_name.
     """
-    # Example vehicle data
-    return [
-        {"make": "Toyota", "model": "Corolla", "year": 2020},
-        {"make": "Volkswagen", "model": "Golf", "year": 2019},
-        {"make": "Tesla", "model": "Model Y", "year": 2023},
+    url = f"{NHTSA_BASE_URL}/GetAllMakes?format=json"
+    print(f"Fetching vehicle data from: {url}")
+    try:
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as exc:
+        raise RuntimeError(f"Failed to fetch vehicle data from {url}: {exc}") from exc
+    payload = response.json()
+    if "Results" not in payload:
+        raise ValueError(f"Unexpected response from {url}: 'Results' key missing. Got: {list(payload.keys())}")
+    results = payload["Results"]
+    vehicles = [
+        {"make_id": item["Make_ID"], "make_name": item["Make_Name"]}
+        for item in results
     ]
+    print(f"Fetched {len(vehicles)} vehicle makes from NHTSA vPIC API.")
+    return vehicles
 
 
 if __name__ == '__main__':
