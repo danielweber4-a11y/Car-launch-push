@@ -1,15 +1,18 @@
 name: Run Car Launch Workflow
 
 on:
+  schedule:
+    - cron: '0 8 * * *' # Täglich um 8:00 Uhr UTC
   workflow_dispatch: # Ermöglicht manuelles Starten der Action
     inputs:
       email_subject: # Eingabeparameter für die E-Mail lautet E-Mail-Betreff
         description: 'Betreff der E-Mail'
-        required: true
+        required: false
+        default: 'Tägliche Fahrzeugneuheiten'
       email_body_message:
         description: 'Optionaler Standardtext der Nachricht'
         required: false
-        default: 'Hier sind die neuesten Fahrzeugdaten!'
+        default: ''
 
 jobs:
   run-scripts:
@@ -30,7 +33,12 @@ jobs:
         run: python scripts/fetch_vehicles.py
 
       - name: Process data
-        run: python scripts/process_data.py
+        id: process_data
+        run: |
+          BODY=$(python scripts/process_data.py)
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Email processed data
         run: python scripts/send_email.py
@@ -39,5 +47,5 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }} # Port
           EMAIL: ${{ secrets.EMAIL }} # Deine E-Mail-Adresse
           PASSWORD: ${{ secrets.PASSWORD }} # Dein Passwort
-          EMAIL_SUBJECT: ${{ inputs.email_subject }}
-          EMAIL_BODY_MESSAGE: ${{ inputs.email_body_message }}
+          EMAIL_SUBJECT: ${{ inputs.email_subject || 'Tägliche Fahrzeugneuheiten' }}
+          EMAIL_BODY_MESSAGE: ${{ inputs.email_body_message || steps.process_data.outputs.body }}
