@@ -52,9 +52,20 @@ def process_data(file_path, days=7):
 
     return "\n".join(processed_data)
 
+
+def save_email_body(body, output_path):
+    """Write the email body to a text file so other steps can read it."""
+    with open(output_path, "w", encoding="utf-8") as fh:
+        fh.write(body)
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.WARNING)
     here = os.path.dirname(__file__)
     json_path = os.path.join(here, "..", "data", "fetched_data.json")
     result = process_data(json_path)
-    print("Processed data:\n", result)
+    output_path = os.path.join(here, "..", "data", "email_body.txt")
+    save_email_body(result, output_path)
+    print("Current content prepared to send out:\n")
+    print(result if result and result.strip() else "(no vehicles found for the past 7 days)")
+    print(f"\n[Saved to {os.path.abspath(output_path)}]")
