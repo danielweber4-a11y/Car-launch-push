@@ -24,7 +24,7 @@ def send_email(subject, body):
         server.starttls()
         server.login(email, password)
         message = f"Subject: {subject}\n\n{body}"
-        server.sendmail(email, email, message)
+        server.sendmail(email, "daniel.weber@johnsonelectric.com", message)
         server.quit()
         print("Email sent successfully")
     except Exception as e:
