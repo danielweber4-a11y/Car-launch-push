@@ -1,11 +1,14 @@
 name: Run Car Launch Workflow
 
 on:
+  schedule:
+    - cron: '0 6 * * 5' # Every Friday at 6am UTC
   workflow_dispatch: # Ermöglicht manuelles Starten der Action
     inputs:
       email_subject: # Eingabeparameter für die E-Mail lautet E-Mail-Betreff
         description: 'Betreff der E-Mail'
-        required: true
+        required: false
+        default: 'Neue Fahrzeugdaten'
       email_body_message:
         description: 'Optionaler Standardtext der Nachricht'
         required: false
