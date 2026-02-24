@@ -23,7 +23,7 @@ def send_email(subject, body):
         server = smtplib.SMTP(smtp_server, port)
         server.starttls()
         server.login(email, password)
-        message = f"Subject: {subject}\n\n{body}"
+        message = f"Subject: {subject}\nFrom: {email}\n\n{body}"
         server.sendmail(email, email, message)
         server.quit()
         print("Email sent successfully")
@@ -33,4 +33,13 @@ def send_email(subject, body):
 if __name__ == "__main__":
     subject = os.environ.get("EMAIL_SUBJECT", "")
     body = os.environ.get("EMAIL_BODY_MESSAGE", "")
+    processed_data_path = os.path.join(os.path.dirname(__file__), "..", "data", "processed_data.txt")
+    if os.path.exists(processed_data_path):
+        try:
+            with open(processed_data_path, "r", encoding="utf-8") as f:
+                vehicle_data = f.read().strip()
+            if vehicle_data:
+                body = f"{body}\n\n{vehicle_data}" if body else vehicle_data
+        except OSError as e:
+            print(f"Warning: could not read processed vehicle data: {e}")
     send_email(subject, body)
