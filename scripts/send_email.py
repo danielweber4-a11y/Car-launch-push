@@ -1,6 +1,7 @@
 import os
 import smtplib
 import json
+import sys
 
 def send_email(subject, body):
     smtp_server = os.environ.get("SMTP_SERVER")
@@ -28,7 +29,8 @@ def send_email(subject, body):
         server.quit()
         print("Email sent successfully")
     except Exception as e:
-        print(f"Error sending email: {e}")
+        print(f"Error sending email: {e}", file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__":
     subject = os.environ.get("EMAIL_SUBJECT", "")
