@@ -23,7 +23,7 @@ def send_email(subject, body):
         server = smtplib.SMTP(smtp_server, port)
         server.starttls()
         server.login(email, password)
-        message = f"From: {email}\nSubject: {subject}\n\n{body}"
+        message = f"Subject: {subject}\nFrom: {email}\n\n{body}"
         server.sendmail(email, email, message)
         server.quit()
         print("Email sent successfully")
